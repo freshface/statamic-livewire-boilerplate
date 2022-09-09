@@ -1,0 +1,85 @@
+sections:
+  main:
+    display: Main
+    fields:
+      -
+        handle: title
+        field:
+          type: text
+          required: true
+          validate:
+            - required
+  sidebar:
+    display: Sidebar
+    fields:
+      -
+        handle: date
+        field:
+          type: date
+          required: true
+          validate:
+            - required
+      -
+        handle: code
+        field:
+          input_type: text
+          antlers: false
+          display: Code
+          type: text
+          icon: text
+          instructions: 'Code van intern gebruik'
+          listable: hidden
+          instructions_position: above
+          visibility: visible
+          always_save: false
+      -
+        handle: slug
+        field:
+          type: slug
+          localizable: true
+      -
+        handle: categories
+        field:
+          type: terms
+          taxonomies:
+            - categories
+          display: Categories
+          mode: select
+      -
+        handle: phases
+        field:
+          type: terms
+          taxonomies:
+            - phases
+          display: Fases
+          mode: select
+      -
+        handle: types
+        field:
+          type: terms
+          taxonomies:
+            - types
+          display: Types
+          mode: select
+      -
+        handle: archiveer
+        field:
+          default: false
+          display: Archiveer
+          type: toggle
+          icon: toggle
+          instructions: 'Door dit aan te vinken zal het project in het archief komen te staan.'
+          listable: hidden
+          instructions_position: above
+          visibility: visible
+          always_save: false
+      -
+        handle: parent
+        field:
+          type: entries
+          collections:
+            - projects
+          max_items: 1
+          listable: false
+          localizable: true
+title: Project
