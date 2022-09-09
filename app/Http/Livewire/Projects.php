@@ -24,7 +24,7 @@ class Projects extends Component
         'phases' => [],
     ];
 
-    public $orderBY = [
+    public $orderBy = [
         'key' => 'date',
         'direaction' => 'desc'
     ];
