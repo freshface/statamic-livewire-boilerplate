@@ -3,4 +3,5 @@
 
 1. Use in existing statamic project
 2. run `composer require jonassiewertsen/statamic-livewire`
-3. run `npm run watch`
+3. Place files in correct folders
+4. run `php artisan cache:clear`
