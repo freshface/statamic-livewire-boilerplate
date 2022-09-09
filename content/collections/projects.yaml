@@ -2,7 +2,6 @@ title: Projects
 propagate: false
 template: projects/show
 layout: layout
-mount: ce5a2350-0ba0-4b98-b0c9-cb73b42d55aa
 taxonomies:
   - categories
   - phases
