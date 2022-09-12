@@ -17,6 +17,7 @@ class Projects extends Component
     public $filters = [];
     public $search = '';
     public $archive = false;
+    public $sort = 'title:asc';
 
     public $filtersToMerge = [
         'categories' => [],
@@ -33,6 +34,7 @@ class Projects extends Component
 
     protected $queryString = [
         'filters',
+        'sort'=> ['except' => 'order:asc'],
         'search' => ['except' => '']
     ];
 
@@ -43,10 +45,16 @@ class Projects extends Component
 
     protected function entries()
     {
-        $entries = Entry::query();
-        $entries->where('collection', 'projects');
-        $entries->where('locale', Site::current()->handle);
-        $entries->where('status', 'published');
+        $pieces = explode(":", $this->sort);
+        $this->orderBy = [
+            'key' => $pieces[0],
+            'direction' => $pieces[1],
+        ];
+
+        $entries = Entry::query()
+        ->where('collection', 'projects')
+        ->where('locale', Site::current()->handle)
+        ->where('status', 'published');
 
         $entries->when($this->filters['categories'], function ($query) {
             $query->whereTaxonomyIn($this->filters['categories']);
@@ -60,29 +68,35 @@ class Projects extends Component
             $query->whereTaxonomyIn($this->filters['phases']);
         });
 
-        $entries->where('archiveer', '=', $this->archive);
+        $entries->where('archive', '=', (bool) $this->archive);
 
         $entries->when($this->search, function ($query) {
             $query->where('title', 'like', '%'. $this->search . '%');
             $query->orWhere('code', 'like', '%'. $this->search . '%');
         });
 
-        $entries->orderBy('order');
+        if($this->orderBy['key'] == 'order'){
+            $entries->orderBy('order');
+        } else {
+            $entries->orderBy($this->orderBy['key'], $this->orderBy['direction']);
+        }
 
-        $entries = $entries->paginate($this->paginate);
-
-        return $this->withPagination('entries', $entries);
+        if($this->paginate){
+            $entries = $entries->paginate($this->paginate);
+            return $this->withPagination('entries', $entries);
+        } else {
+            return ['entries' => $entries->get()];
+        }
     }
 
 
     public function render()
     {
-        return view('livewire.projects_paginated', $this->readyToLoad ? $this->entries() : []);
+        return view('livewire.projects', $this->readyToLoad ? $this->entries() : []);
     }
 
     public function mount(){
         $this->filters = array_merge($this->filtersToMerge, $this->filters);
-        $this->archive = (bool) $this->archive;
     }
 
     public function clearFilterKey($key, $value = []){

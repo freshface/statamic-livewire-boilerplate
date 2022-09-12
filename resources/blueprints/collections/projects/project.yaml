@@ -62,10 +62,10 @@ sections:
           display: Types
           mode: select
       -
-        handle: archiveer
+        handle: archive
         field:
           default: false
-          display: Archiveer
+          display: archive
           type: toggle
           icon: toggle
           instructions: 'Door dit aan te vinken zal het project in het archief komen te staan.'

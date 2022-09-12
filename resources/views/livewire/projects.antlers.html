@@ -1,5 +1,12 @@
 <div wire:init="loadPosts">
 
+    <select wire:model="sort">
+        <option value="order:asc">Original</option>
+        <option value="title:asc">A-Z</option>
+        <option value="title:desc">Z-A</option>
+    </select>
+
+
     <h3 class="font-bold">Categorieen</h3>
     <ul>
         {{ if filters.categories }}
